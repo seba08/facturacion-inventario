@@ -1,6 +1,5 @@
-# Configuración inicial de cualquier proyecto en NodeJS con Express
+# Proyecto de Facturación y Gestion de inventario
 
-La idea de este proyecto, es tener un proyecto inicial limpio sin ninguna configuración previa,
-para que cualquiera tenga su punto de partida y evitar crearse las carpetas e instalar los paquetes.
+## API para el sistema de facturación y gestión de inventario
 
-Recordar ejecutar `npm i` para instalar node_modeles.
+Recordar ejecutar `npm i` para instalar node_modules.

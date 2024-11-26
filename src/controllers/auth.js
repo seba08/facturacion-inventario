@@ -37,7 +37,7 @@ const userAuth = async (req = request, res = response) => {
                     msg: "Login exitoso...!",
                     user: {
                         name: userExist.name,
-                        email: userExist.email
+                        email: userExist.role
                     },
                     token
                 })

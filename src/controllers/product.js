@@ -34,6 +34,64 @@ const getProducts = async (req, res = response)=> {
     })
 
 }
+
+const getProductPaginated = async (req, res) => {
+    const { cursor, limit = 2, direction = 'forward' } = req.query;
+
+  // Convertir `limit` a número
+  const pageSize = parseInt(limit, 10);
+
+  // Establecer el filtro según la dirección
+  let filter = {};
+  if (cursor) {
+    if (direction === 'forward') {
+      filter = { _id: { $gt: cursor } }; // Siguiente página
+    } else if (direction === 'backward') {
+      filter = { _id: { $lt: cursor } }; // Página anterior
+    }
+  }
+
+  try {
+    // Consultar productos según la dirección
+    let productsQuery = Product.find(filter).sort({ _id: 1 }); // Orden ascendente (por defecto)
+    if (direction === 'backward') {
+      productsQuery = productsQuery.sort({ _id: -1 }); // Orden descendente para retroceso
+    }
+
+    const products = await productsQuery.limit(pageSize + 1); // Limitar +1 para saber si hay más páginas
+
+    // Determinar si hay más páginas
+    const hasMore = products.length > pageSize;
+
+    // Si hay más, quitar el último elemento del arreglo
+    if (hasMore) {
+      products.pop();
+    }
+
+    // Si es retroceso, invertir el arreglo para mantener el orden ascendente
+    if (direction === 'backward') {
+      products.reverse();
+    }
+
+    // Determinar los cursores
+    const nextPage = hasMore ? products[products.length - 1]._id : null;
+    const previousPage = products.length > 0 ? products[0]._id : null;
+
+    // Responder
+    res.status(200).json({
+      totalProducts: products.length,
+      currentPage: cursor || null,
+      nextPage: direction === 'forward' ? nextPage : cursor,
+      previousPage: direction === 'backward' ? previousPage : cursor,
+      pageSize,
+      products,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener los productos.' });
+  }
+}
+
 /* 
   /* Agregar usuario.
   *  Que no se repita el email
@@ -172,5 +230,6 @@ export {
     putProduct,
     deleteProduct,
     productLowStock,
-    productStatsByCategory
+    productStatsByCategory,
+    getProductPaginated
 }

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { deleteProduct, 
     getProduct, 
+    getProductPaginated, 
     getProducts, 
     postProduct, 
     productLowStock, 
@@ -17,6 +18,7 @@ const productRouter = Router();
 
 
 productRouter.get("/", getProducts)
+productRouter.get("/paginated", getProductPaginated)
 productRouter.post("/", 
 validarJwt,
 body("name").notEmpty().withMessage("Tienes que insertar el nombre del producto."),

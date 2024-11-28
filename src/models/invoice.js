@@ -1,8 +1,7 @@
 import { Schema, model } from "mongoose";
 
 const invoiceSchema = new Schema({
-  customerName: { type: String, required: true },
-  customerEmail: { type: String },
+  customerId: { type: Schema.Types.ObjectId, ref: 'Customer', required: true },
   items: [
     {
       product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
@@ -14,4 +13,5 @@ const invoiceSchema = new Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-export const Invoice = model('Invoice', invoiceSchema);
+const Invoice = model('Invoice', invoiceSchema);
+export default Invoice;

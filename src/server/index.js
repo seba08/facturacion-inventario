@@ -3,7 +3,15 @@ import cors from "cors";
 import morgan from "morgan";
 import connectionDB from "../config/conn.js";
 
-import {productRouter, categoryRouter, userRouter, invoiceRouter, authRouter} from "../routes/index.js";
+import {
+    productRouter, 
+    categoryRouter, 
+    userRouter, 
+    invoiceRouter, 
+    authRouter, 
+    dashboardRouter, 
+    customerRouter} from "../routes/index.js";
+
 
 class Server{
     constructor(){
@@ -37,7 +45,9 @@ class Server{
         this.app.use("/categories", categoryRouter )
         this.app.use("/users", userRouter )
         this.app.use("/invoices", invoiceRouter )
+        this.app.use("/customers", customerRouter)
         this.app.use("/auth", authRouter)
+        this.app.use("/dashboard", dashboardRouter)
     }
 
     //listen

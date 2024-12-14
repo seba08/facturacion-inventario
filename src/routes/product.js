@@ -18,7 +18,7 @@ const productRouter = Router();
 
 
 productRouter.get("/", getProducts)
-productRouter.get("/paginated", getProductPaginated)
+productRouter.get("/paginated", validarJwt, getProductPaginated)
 productRouter.post("/", 
 validarJwt,
 body("name").notEmpty().withMessage("Tienes que insertar el nombre del producto."),

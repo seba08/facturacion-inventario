@@ -13,9 +13,17 @@ const getCategory = async (req, res = response)=> {
 
 const getCategories = async (req, res = response)=> {
 
-    res.status(200).json({
-        msg: "Categories"
-    })
+    try {
+        const categories = await Category.find({});
+        res.status(200).json({
+            msg: "Categories",
+            categories
+        })
+    } catch (error) {
+        res.status(500).json({
+            msg: "Error al mostrar las categorías."
+        })
+    }
 
 }
 /* 
